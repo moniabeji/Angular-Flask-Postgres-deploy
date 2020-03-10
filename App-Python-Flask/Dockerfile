@@ -8,5 +8,5 @@ RUN pip install -r requirements.txt
 COPY . /app_back
 
 #ENTRYPOINT [ "python" ]
-
+EXPOSE 5000
 CMD ["python",  "-m", "src.main" ]

@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+    frontend: 
+        restart: always
+        container_name: 'nginx_fontend'
+        depends_on: 
+            - backend
+        build: 
+            context: ./App-Angular
+            dockerfile: Dockerfile
+        ports:
+            - '3050:80'
+        volumes:
+            # inside /app in th container don't try to override this folder (node_modules)
+            - /app/node_modules
+            - ./App-Angular:/usr/src/app
+    backend:
+        build: 
+            context: ./App-Python-Flask/src
+            dockerfile: Dockerfile
+        depends_on: 
+            - db
+        environment:
+            - PGUSER=postgres
+            - PGHOST=postgres
+            - PGDATABASE=online-exam
+            - PGPASSWORD=root
+            - PGPORT=5432
+    db:
+        image: postgres
+        container_name: "postgres"
+        
